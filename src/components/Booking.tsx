@@ -1,0 +1,228 @@
+import { useState } from "react";
+
+const services = [
+  "Hair Cut & Styling",
+  "Hair Coloring",
+  "Smoothing",
+  "Creambath",
+  "Makeup Daily",
+  "Makeup Wisuda",
+  "Makeup Party",
+  "Makeup Wedding",
+  "Facial",
+  "Spa & Massage",
+  "Nail Art",
+  "Lainnya",
+];
+
+export default function Booking() {
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    service: "",
+    date: "",
+    time: "",
+    notes: "",
+  });
+  const [sent, setSent] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const msg = `*BOOKING SALON BEAUTY VIBES*%0A%0A` +
+      `Nama: ${form.name}%0A` +
+      `No. HP: ${form.phone}%0A` +
+      `Layanan: ${form.service}%0A` +
+      `Tanggal: ${form.date}%0A` +
+      `Jam: ${form.time}%0A` +
+      `Catatan: ${form.notes || "-"}`;
+    // Replace with actual number
+    window.open(`https://wa.me/6285333240210?text=${msg}`, "_blank");
+    setSent(true);
+    setTimeout(() => setSent(false), 4000);
+  };
+
+  return (
+    <section
+      id="booking"
+      className="py-20 lg:py-28 bg-gradient-to-br from-rose-700 via-rose-600 to-rose-800 relative overflow-hidden"
+    >
+      <div className="absolute inset-0 pattern-dots opacity-10" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-gold/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose-300/20 rounded-full blur-3xl" />
+
+      <div className="max-w-6xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+        {/* Left content */}
+        <div className="text-white">
+          <div className="divider-fancy text-gold-light text-sm font-semibold uppercase tracking-[0.3em] mb-4">
+            Booking Sekarang
+          </div>
+          <h2 className="font-display text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            Reservasi Jadwal{" "}
+            <span className="text-gradient-gold italic">Cantikmu</span>
+          </h2>
+          <p className="text-rose-100 leading-relaxed mb-8">
+            Isi form berikut atau hubungi kami langsung melalui WhatsApp /
+            Instagram untuk membuat reservasi. Tim kami akan segera
+            mengkonfirmasi jadwal Anda.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              {
+                icon: "📍",
+                title: "Lokasi",
+                desc: "Jl. Sadia 1, Kec. Mpunda, Kota Bima",
+                sub: "(Sebelum Lampu Merah, di sebelah Agen BRI)",
+              },
+              {
+                icon: "🕐",
+                title: "Jam Operasional",
+                desc: "09:00 – 22:00 WITA",
+                sub: "Buka Setiap Hari",
+              },
+              {
+                icon: "📱",
+                title: "Hubungi Kami",
+                desc: "DM Instagram @salonbeautyvibes__",
+                sub: "Owner: @ely_2003p",
+              },
+            ].map((info) => (
+              <div
+                key={info.title}
+                className="flex items-start gap-4 bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-4"
+              >
+                <div className="text-3xl">{info.icon}</div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-rose-200">
+                    {info.title}
+                  </div>
+                  <div className="font-semibold">{info.desc}</div>
+                  <div className="text-sm text-rose-200 mt-0.5">{info.sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Form */}
+        <div className="bg-white rounded-3xl p-7 lg:p-10 shadow-2xl">
+          <h3 className="font-display text-2xl font-bold text-gray-900 mb-1">
+            Form Booking
+          </h3>
+          <p className="text-sm text-gray-500 mb-6">
+            Pesanan Anda akan dikirim via WhatsApp
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Nama Lengkap *
+              </label>
+              <input
+                type="text"
+                name="name"
+                required
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Nama Anda"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Nomor WhatsApp *
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                required
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="08xxxxxxxxxx"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Pilih Layanan *
+              </label>
+              <select
+                name="service"
+                required
+                value={form.service}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition bg-white"
+              >
+                <option value="">-- Pilih layanan --</option>
+                {services.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Tanggal *
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  required
+                  value={form.date}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Jam *
+                </label>
+                <input
+                  type="time"
+                  name="time"
+                  required
+                  value={form.time}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Catatan
+              </label>
+              <textarea
+                name="notes"
+                value={form.notes}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Permintaan khusus, dll..."
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition resize-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full btn-shine text-white font-semibold py-4 rounded-xl shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2.1-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.3-.5-.4zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.3-1.2c1.4.7 2.9 1.1 4.5 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
+              </svg>
+              {sent ? "Terkirim! ✓" : "Kirim Booking via WhatsApp"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
