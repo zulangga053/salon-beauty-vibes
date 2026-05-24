@@ -33,19 +33,33 @@ export default function Booking() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const msg = `*BOOKING SALON BEAUTY VIBES*%0A%0A` +
-      `Nama: ${form.name}%0A` +
-      `No. HP: ${form.phone}%0A` +
-      `Layanan: ${form.service}%0A` +
-      `Tanggal: ${form.date}%0A` +
-      `Jam: ${form.time}%0A` +
-      `Catatan: ${form.notes || "-"}`;
-    // Replace with actual number
-    window.open(`https://wa.me/6285333240210?text=${msg}`, "_blank");
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-  };
+  e.preventDefault();
+
+  const whatsappNumber = "6285333240210";
+
+  const message =
+`🌸 BOOKING SALON BEAUTY VIBES 🌸
+
+👤 Nama: ${form.name}
+📱 No. HP: ${form.phone}
+💄 Layanan: ${form.service}
+📅 Tanggal: ${form.date}
+⏰ Jam: ${form.time}
+📝 Catatan: ${form.notes || "-"}
+
+Terima kasih 🙏`;
+
+  const whatsappURL =
+    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(whatsappURL, "_blank");
+
+  setSent(true);
+
+  setTimeout(() => {
+    setSent(false);
+  }, 4000);
+};
 
   return (
     <section
@@ -177,6 +191,7 @@ export default function Booking() {
                   type="date"
                   name="date"
                   required
+                  min={new Date().toISOString().split("T")[0]}
                   value={form.date}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-100 transition"
