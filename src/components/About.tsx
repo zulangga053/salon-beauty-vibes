@@ -10,6 +10,8 @@ export default function About() {
             <img
               src="/images/owner.jpg"
               alt="Owner Salon Beauty Vibes"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-contain"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-rose-900/60 to-transparent" />

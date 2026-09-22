@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { business, whatsappUrl } from "../data/business";
 
 const services = [
   "Hair Cut & Styling",
@@ -35,8 +36,6 @@ export default function Booking() {
   const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
 
-  const whatsappNumber = "6285333240210";
-
   const message =
 `🌸 BOOKING SALON BEAUTY VIBES 🌸
 
@@ -49,10 +48,7 @@ export default function Booking() {
 
 Terima kasih 🙏`;
 
-  const whatsappURL =
-    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
-  window.open(whatsappURL, "_blank");
+  window.open(whatsappUrl(message), "_blank");
 
   setSent(true);
 
@@ -91,20 +87,20 @@ Terima kasih 🙏`;
               {
                 icon: "📍",
                 title: "Lokasi",
-                desc: "Jl. Sadia 1, Kec. Mpunda, Kota Bima",
+                desc: business.shortAddress,
                 sub: "(Sebelum Lampu Merah, di sebelah Agen BRI)",
               },
               {
                 icon: "🕐",
                 title: "Jam Operasional",
-                desc: "09:00 – 22:00 WITA",
-                sub: "Buka Setiap Hari",
+                desc: business.hours,
+                sub: business.openDays,
               },
               {
                 icon: "📱",
                 title: "Hubungi Kami",
                 desc: "DM Instagram @salonbeautyvibes__",
-                sub: "Owner: @ely_2003p",
+                sub: `Owner: ${business.owner}`,
               },
             ].map((info) => (
               <div
@@ -135,10 +131,11 @@ Terima kasih 🙏`;
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="booking-name" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Nama Lengkap *
               </label>
               <input
+                id="booking-name"
                 type="text"
                 name="name"
                 required
@@ -150,10 +147,11 @@ Terima kasih 🙏`;
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="booking-phone" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Nomor WhatsApp *
               </label>
               <input
+                id="booking-phone"
                 type="tel"
                 name="phone"
                 required
@@ -165,10 +163,11 @@ Terima kasih 🙏`;
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="booking-service" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Pilih Layanan *
               </label>
               <select
+                id="booking-service"
                 name="service"
                 required
                 value={form.service}
@@ -184,10 +183,11 @@ Terima kasih 🙏`;
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="booking-date" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Tanggal *
                 </label>
                 <input
+                  id="booking-date"
                   type="date"
                   name="date"
                   required
@@ -198,10 +198,11 @@ Terima kasih 🙏`;
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="booking-time" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Jam *
                 </label>
                 <input
+                  id="booking-time"
                   type="time"
                   name="time"
                   required
@@ -213,10 +214,11 @@ Terima kasih 🙏`;
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="booking-notes" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Catatan
               </label>
               <textarea
+                id="booking-notes"
                 name="notes"
                 value={form.notes}
                 onChange={handleChange}

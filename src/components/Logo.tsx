@@ -1,7 +1,6 @@
 interface LogoProps {
   size?: number;
   className?: string;
-  showCircle?: boolean;
 }
 
 export default function Logo({

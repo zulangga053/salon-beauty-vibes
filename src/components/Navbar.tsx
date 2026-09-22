@@ -39,7 +39,7 @@ export default function Navbar() {
                 : "bg-white text-gray-900 shadow-xl ring-2 ring-white/50"
             } group-hover:scale-105`}
           >
-            <Logo size={47} className="text-gray-900" showCircle={false} />
+            <Logo size={47} className="text-gray-900" />
           </div>
           <div className="flex flex-col leading-tight">
             <span
@@ -86,6 +86,7 @@ export default function Navbar() {
         <button
           onClick={() => setOpen(!open)}
           aria-label="Menu"
+          aria-expanded={open}
           className={`xl:hidden p-2 rounded-lg ${
             scrolled ? "text-gray-800" : "text-white"
           }`}

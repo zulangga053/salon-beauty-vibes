@@ -1,7 +1,8 @@
+import { business } from "../data/business";
 import Logo from "./Logo";
 
 function LogoIcon() {
-  return <Logo size={110} className="text-gray-900" showCircle={false} />;
+  return <Logo size={110} className="text-gray-900" />;
 }
 
 export default function Hero() {
@@ -33,7 +34,7 @@ export default function Hero() {
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2 mb-6 animate-fade-up">
           <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
           <span className="text-xs sm:text-sm tracking-wide">
-            Buka Setiap Hari · 09:00 – 22:00 WITA
+            {business.openDays} · {business.hours}
           </span>
         </div>
 
