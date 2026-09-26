@@ -52,7 +52,7 @@ export default function Booking() {
     setError("");
 
     const phone = normalizePhone(form.phone);
-    if (!/^628\\d{8,11}$/.test(phone)) {
+    if (!/^628\d{8,11}$/.test(phone)) {
       setError("Masukkan nomor WhatsApp Indonesia yang valid, contoh 081234567890.");
       setStatus("error");
       return;
