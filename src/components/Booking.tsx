@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { business, whatsappUrl } from "../data/business";
 
+const normalizePhone = (value: string) => {
+  const digits = value.replace(/\D/g, "");
+  if (digits.startsWith("08")) return `62${digits.slice(1)}`;
+  if (digits.startsWith("8")) return `62${digits}`;
+  if (digits.startsWith("6208")) return `62${digits.slice(3)}`;
+  return digits;
+};
+
 const services = [
   "Hair Cut & Styling",
   "Hair Coloring",
@@ -43,7 +51,8 @@ export default function Booking() {
     e.preventDefault();
     setError("");
 
-    if (!/^08\\d{8,11}$/.test(form.phone.replace(/[\\s-]/g, ""))) {
+    const phone = normalizePhone(form.phone);
+    if (!/^628\\d{8,11}$/.test(phone)) {
       setError("Masukkan nomor WhatsApp Indonesia yang valid, contoh 081234567890.");
       setStatus("error");
       return;
