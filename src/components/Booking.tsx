@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { business, whatsappUrl } from "../data/business";
 
 const services = [
@@ -25,7 +25,13 @@ export default function Booking() {
     time: "",
     notes: "",
   });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+  const statusRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (status !== "idle") statusRef.current?.focus();
+  }, [status]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -34,9 +40,22 @@ export default function Booking() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
+    setError("");
 
-  const message =
+    if (!/^08\\d{8,11}$/.test(form.phone.replace(/[\\s-]/g, ""))) {
+      setError("Masukkan nomor WhatsApp Indonesia yang valid, contoh 081234567890.");
+      setStatus("error");
+      return;
+    }
+
+    if (form.time < "09:00" || form.time > "22:00") {
+      setError("Pilih jam booking antara 09:00 dan 22:00 WITA.");
+      setStatus("error");
+      return;
+    }
+
+    const message =
 `🌸 BOOKING SALON BEAUTY VIBES 🌸
 
 👤 Nama: ${form.name}
@@ -48,14 +67,15 @@ export default function Booking() {
 
 Terima kasih 🙏`;
 
-  window.open(whatsappUrl(message), "_blank");
+    const popup = window.open(whatsappUrl(message), "_blank", "noopener,noreferrer");
+    if (!popup) {
+      setError("WhatsApp tidak dapat dibuka. Izinkan popup atau gunakan tombol WhatsApp di halaman.");
+      setStatus("error");
+      return;
+    }
 
-  setSent(true);
-
-  setTimeout(() => {
-    setSent(false);
-  }, 4000);
-};
+    setStatus("success");
+  };
 
   return (
     <section
@@ -228,6 +248,16 @@ Terima kasih 🙏`;
               />
             </div>
 
+            <p
+              ref={statusRef}
+              tabIndex={-1}
+              role={status === "error" ? "alert" : "status"}
+              aria-live="polite"
+              className={`text-sm ${status === "error" ? "text-red-600" : "text-green-700"}`}
+            >
+              {status === "error" ? error : status === "success" ? "Booking siap dikirim via WhatsApp." : ""}
+            </p>
+
             <button
               type="submit"
               className="w-full btn-shine text-white font-semibold py-4 rounded-xl shadow-lg shadow-rose-500/30 flex items-center justify-center gap-2"
@@ -235,7 +265,7 @@ Terima kasih 🙏`;
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2.1-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.3-.5-.4zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.3 1.2 4.7L2 22l5.3-1.2c1.4.7 2.9 1.1 4.5 1.1 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
               </svg>
-              {sent ? "Terkirim! ✓" : "Kirim Booking via WhatsApp"}
+              {status === "success" ? "Terkirim! ✓" : "Kirim Booking via WhatsApp"}
             </button>
           </form>
         </div>
